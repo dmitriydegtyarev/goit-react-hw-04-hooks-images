@@ -1,28 +1,42 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 
 import { Container } from 'Components/Container';
 import { Searchbar } from 'Components/Searchbar';
 import { ImageGallery } from 'Components/ImageGallery';
 
-export class App extends Component {
-  state = {
-    searchQuery: '',
-  };
+export const App = () => {
+  const [searchQuery, setSearchQuery] = useState('');
 
-  handleFormSubmit = searchQuery => {
-    this.setState({ searchQuery });
-  };
+  const handleFormSubmit = searchQuery => setSearchQuery(searchQuery);
 
-  render() {
-    const { searchQuery } = this.state;
+  return (
+    <Container>
+      <Searchbar onSubmit={handleFormSubmit} />
+      <ImageGallery searchQuery={searchQuery} />
+      <Toaster />
+    </Container>
+  );
+};
 
-    return (
-      <Container>
-        <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery searchQuery={searchQuery} />
-        <Toaster />
-      </Container>
-    );
-  }
-}
+// export class App extends Component {
+//   state = {
+//     searchQuery: '',
+//   };
+
+//   handleFormSubmit = searchQuery => {
+//     this.setState({ searchQuery });
+//   };
+
+//   render() {
+//     const { searchQuery } = this.state;
+
+//     return (
+//       <Container>
+//         <Searchbar onSubmit={this.handleFormSubmit} />
+//         <ImageGallery searchQuery={searchQuery} />
+//         <Toaster />
+//       </Container>
+//     );
+//   }
+// }
