@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 import {
@@ -9,18 +9,14 @@ import {
   SearchbarFormInput,
 } from './Searchbar.styled';
 
-export class Searchbar extends Component {
-  state = {
-    searchQuery: '',
+export const Searchbar = ({ onSubmit }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleChange = event => {
+    setSearchQuery(event.currentTarget.value.toLowerCase());
   };
 
-  handleChange = event => {
-    this.setState({ searchQuery: event.currentTarget.value.toLowerCase() });
-  };
-
-  handleSubmit = event => {
-    const { searchQuery } = this.state;
-
+  const handleSubmit = event => {
     event.preventDefault();
 
     if (searchQuery.trim() === '') {
@@ -28,29 +24,26 @@ export class Searchbar extends Component {
       return;
     }
 
-    this.props.onSubmit(searchQuery);
-    this.setState({ searchQuery: '' });
+    onSubmit(searchQuery);
+    setSearchQuery('');
   };
 
-  render() {
-    const { searchQuery } = this.state;
-    return (
-      <SearchbarHeader>
-        <SearchbarForm onSubmit={this.handleSubmit}>
-          <SearchbarFormInput
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            value={searchQuery}
-            onChange={this.handleChange}
-          />
+  return (
+    <SearchbarHeader>
+      <SearchbarForm onSubmit={handleSubmit}>
+        <SearchbarFormInput
+          type="text"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          value={searchQuery}
+          onChange={handleChange}
+        />
 
-          <SearchbarButton type="submit">
-            <SearchbarButtonLabel>Search</SearchbarButtonLabel>
-          </SearchbarButton>
-        </SearchbarForm>
-      </SearchbarHeader>
-    );
-  }
-}
+        <SearchbarButton type="submit">
+          <SearchbarButtonLabel>Search</SearchbarButtonLabel>
+        </SearchbarButton>
+      </SearchbarForm>
+    </SearchbarHeader>
+  );
+};
